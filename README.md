@@ -1,112 +1,87 @@
 
-# Backend — готовый скелет проекта
+# CatalogKIKI — Backend
 
-Это **готовая структура (skeleton)** для быстрого старта проектов: от простых сайтов до админок/CRM.
+Backend часть проекта **CatalogKIKI** (Django) с инфраструктурой для разработки и продакшна через Docker.
 
-Скелет уже содержит базовую инфраструктуру:
+В составе:
 
-- Docker / docker-compose (отдельно dev и prod)
-- Postgres + Redis
-- Django backend
-- пример отдельного сервиса (telegram bot) в том же образе
+- Django (папка `app/`)
+- Postgres (`db_catalog`)
+- Redis (`redis_catalog`)
+- Отдельный сервис `telegram_bot` (запускается командой `python manage.py bot`, если используется)
 
-## Что нужно настроить под себя
+## Быстрый старт (dev)
 
-В репозитории используются плейсхолдеры вида `*_namex`. Перед стартом желательно заменить их на свои значения.
+### 1) Переменные окружения
 
-### 1) Переменные окружения (.env)
+В корне `Backend/` есть пример: `.envtest`.
 
-В корне `Backend/` есть файл `.envtest` — это пример того, какие переменные нужны.
-
-Сделай файл `.env` на его основе:
+Создай `.env`:
 
 ```bash
 cp .envtest .env
 ```
 
-Проверь и отредактируй минимум:
+Минимум, что нужно проверить в `.env`:
 
-- `SECRET_KEY` — ключ Django
-- `DEBUG` — `True` только для разработки
-- `ALLOWED_HOSTS` — домены/хосты
+- `SECRET_KEY`
+- `DEBUG=True` (только для разработки)
+- `ALLOWED_HOSTS` (через запятую)
 - `LANGUAGE_CODE`, `TIME_ZONE`
-- `PROJECT_NAMEx` — имя проекта (используется как общий нейминг)
+- `PROJECT_NAME` (например `catalogkiki`)
 
-Postgres:
+Postgres (для docker-compose):
 
-- `POSTGRES_DB` — имя базы
-- `POSTGRES_USER` — пользователь
-- `POSTGRES_PASSWORD` — пароль
-- `POSTGRES_HOST` — **должен совпадать с именем сервиса БД в docker-compose** (по умолчанию `db_namex`)
-- `POSTGRES_PORT` — обычно `5432` внутри сети docker
+- `POSTGRES_DB`
+- `POSTGRES_USER`
+- `POSTGRES_PASSWORD`
+- `POSTGRES_HOST=db_catalog` (важно: должно совпадать с именем сервиса БД в compose)
+- `POSTGRES_PORT=5432`
 
-### 2) docker-compose: нейминг сервисов/контейнеров/volume/network
-
-Файлы:
-
-- `docker/docker-compose.yml` — dev
-- `docker/docker-compose.prod.yml` — prod
-
-Там есть плейсхолдеры, которые стоит заменить под проект:
-
-- `db_namex` (service namex) — имя сервиса Postgres
-- `container_namex: postgres_db_namex` — имя контейнера Postgres
-- `postgres_data_namex` — имя volume для данных Postgres
-- `redis_namex` / `container_namex: redis_namex` — Redis
-- `web_namex` / `container_namex: django_web_namex` — Django контейнер
-- `telegram_bot` / `container_namex: telegram_bot_namex` — бот
-- `portfolio_network` / `portfolio_network_namex` — docker network
-
-Важно:
-
-- `POSTGRES_HOST` в `.env` должен совпадать с **именем сервиса Postgres** (например `db_namex`).
-- В dev-compose проброшены порты:
-  - Postgres: `5433:5432` (снаружи 5433)
-  - Redis: `6389:6379` (снаружи 6389)
-  - Django: `127.0.0.1:8084:8082` (снаружи 8084)
-  При необходимости поменяй внешние порты, если заняты.
-
-## Структура проекта
-
-- `app/` — Django проект
-- `docker/` — Dockerfile и docker-compose
-- `scripts/entrypoint.sh` — entrypoint для контейнера
-- `.envtest` — пример переменных окружения
-
-## Запуск в разработке (docker-compose)
-
-1) Создай `.env`:
-
-```bash
-cp .envtest .env
-```
-
-2) Запусти dev-сборку:
+### 2) Запуск dev окружения
 
 ```bash
 docker compose -f docker/docker-compose.yml up --build
 ```
 
-По умолчанию `web_namex` запускает:
+Что поднимается:
 
-- миграции
-- `collectstatic`
-- dev server Django на `0.0.0.0:8082` (наружу проброшен `127.0.0.1:8084`)
+- Postgres: проброшен наружу как `5433:5432`
+- Redis: проброшен наружу как `6389:6379`
+- Django dev server: внутри `0.0.0.0:8082`, наружу `127.0.0.1:8084`
 
 Открывай:
 
 - `http://127.0.0.1:8084`
 
-## Запуск в продакшне
+## Полезные команды (внутри контейнера web)
+
+- Миграции: `python manage.py migrate`
+- Создать админа: `python manage.py createsuperuser`
+- Собрать статику: `python manage.py collectstatic --noinput`
+
+## Запуск telegram bot (опционально)
+
+В dev/prod compose есть сервис `telegram_bot`.
+
+Если бот используется — убедись, что необходимые переменные для бота добавлены в `.env` (токен и т.д., если требуется вашей реализацией).
+
+## Продакшн
 
 ```bash
 docker compose -f docker/docker-compose.prod.yml up --build -d
 ```
 
-В прод-конфиге `web_namex` запускается через gunicorn и слушает `0.0.0.0:8000`.
+В прод-конфиге Django запускается через gunicorn и слушает `0.0.0.0:8000` (проброшено наружу как `8000:8000`).
+
+## Структура проекта
+
+- `app/` — Django проект (`core.settings`)
+- `docker/` — Dockerfile и docker-compose
+- `scripts/entrypoint.sh` — entrypoint контейнера
+- `.envtest` — пример переменных окружения
 
 ## Типовые проблемы
 
-- Если Postgres не поднимается — проверь `POSTGRES_*` в `.env` и что `POSTGRES_HOST` совпадает с сервисом БД.
-- Если порты заняты — поменяй внешние порты в `docker-compose.yml`.
-
+- Если Postgres не поднимается — проверь `POSTGRES_*` в `.env` и что `POSTGRES_HOST=db_catalog`.
+- Если порты заняты — поменяй внешние порты в `docker/docker-compose.yml`.
