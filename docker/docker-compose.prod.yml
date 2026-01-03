@@ -68,3 +68,5 @@ networks:
 
 volumes:
   postgres_data_catalog:
+  static_catalog:
+  media_catalog:
