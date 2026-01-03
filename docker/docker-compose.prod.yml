@@ -30,8 +30,8 @@ services:
     command: sh -c "/entrypoint.sh && gunicorn core.wsgi:application --bind 0.0.0.0:8000"
     volumes:
       - ../app:/app
-      - ../app/static:/app/static
-      - ../app/media:/app/media
+      - static_catalog:/app/core/staticfiles
+      - media_catalog:/app/media
     env_file:
       - ../.env
     environment:
