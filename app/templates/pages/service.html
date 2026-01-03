@@ -1,0 +1,650 @@
+{% extends 'include/homepage.html' %}
+{% load static %}
+{% block content %}
+    <style>
+        .service-section-modern {
+            padding: 8px 0;
+        }
+        .service-modern-grid {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+        @media (max-width: 768px) {
+            .service-modern-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .service-modern-card {
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 14px;
+            padding: 12px 14px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+        }
+        .service-modern-card-title {
+            font-weight: 700;
+            margin: 0 0 8px 0;
+            font-size: 16px;
+            line-height: 1.25;
+        }
+        .service-modern-list {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+            margin: 0;
+            padding: 0;
+            list-style: none;
+        }
+        .service-modern-list-item {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+            padding: 12px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            background: rgba(255, 255, 255, 0.75);
+        }
+        .service-modern-bullet {
+            width: 22px;
+            height: 22px;
+            border-radius: 7px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex: 0 0 22px;
+            margin-top: 1px;
+            background: rgba(37, 99, 235, 0.12);
+            color: rgb(37, 99, 235);
+            font-weight: 800;
+            font-size: 12px;
+        }
+        .service-modern-bullet-danger {
+            background: rgba(239, 68, 68, 0.12);
+            color: rgb(239, 68, 68);
+        }
+        .service-modern-muted {
+            opacity: 0.85;
+            margin: 0;
+        }
+        .service-modern-cases {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 14px;
+        }
+        @media (max-width: 992px) {
+            .service-modern-cases {
+                grid-template-columns: 1fr;
+            }
+        }
+        .service-modern-case {
+            overflow: hidden;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.92);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.07);
+        }
+        .service-modern-case-body {
+            padding: 14px 14px 12px 14px;
+        }
+        .service-modern-case-images {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            padding: 0 14px 14px 14px;
+        }
+        @media (max-width: 576px) {
+            .service-modern-case-images {
+                grid-template-columns: 1fr;
+            }
+        }
+        .service-modern-case-image-wrap {
+            position: relative;
+            border-radius: 14px;
+            overflow: hidden;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            background: rgba(0, 0, 0, 0.03);
+            aspect-ratio: 4 / 3;
+        }
+        .service-modern-case-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .service-modern-case-badge {
+            position: absolute;
+            left: 10px;
+            top: 10px;
+            padding: 6px 10px;
+            border-radius: 999px;
+            font-size: 12px;
+            font-weight: 700;
+            background: rgba(255, 255, 255, 0.92);
+            border: 1px solid rgba(0, 0, 0, 0.08);
+        }
+        .service-modern-docs {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+        @media (max-width: 768px) {
+            .service-modern-docs {
+                grid-template-columns: 1fr;
+            }
+        }
+        .service-modern-doc {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 12px 12px;
+            border-radius: 14px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            background: rgba(255, 255, 255, 0.75);
+        }
+        .service-modern-doc-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(16, 185, 129, 0.12);
+            color: rgb(16, 185, 129);
+            flex: 0 0 40px;
+            font-weight: 900;
+        }
+        .service-modern-doc-title {
+            margin: 0;
+            font-weight: 800;
+            line-height: 1.25;
+        }
+        .service-modern-doc-meta {
+            margin: 6px 0 0 0;
+            opacity: 0.8;
+            font-size: 13px;
+        }
+        .service-modern-doc-link {
+            display: inline-flex;
+            gap: 8px;
+            align-items: center;
+            padding: 8px 12px;
+            border-radius: 12px;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            background: rgba(255, 255, 255, 0.9);
+            text-decoration: none;
+            margin-top: 10px;
+            font-weight: 700;
+        }
+        .service-modern-doc-link:hover {
+            transform: translateY(-1px);
+        }
+
+        .service-modern-products {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 12px;
+        }
+        @media (max-width: 992px) {
+            .service-modern-products {
+                grid-template-columns: 1fr;
+            }
+        }
+        .service-modern-product {
+            display: flex;
+            gap: 12px;
+            padding: 12px;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+        }
+        .service-modern-product-img {
+            width: 92px;
+            height: 92px;
+            border-radius: 14px;
+            object-fit: cover;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            background: rgba(0, 0, 0, 0.03);
+            flex: 0 0 92px;
+        }
+        @media (max-width: 576px) {
+            .service-modern-product {
+                flex-direction: column;
+            }
+            .service-modern-product-img {
+                width: 100%;
+                height: 180px;
+                flex: 0 0 auto;
+            }
+        }
+        .service-modern-company-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 12px;
+        }
+        @media (max-width: 992px) {
+            .service-modern-company-grid {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+            }
+        }
+        @media (max-width: 576px) {
+            .service-modern-company-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .service-modern-company {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+            padding: 12px;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            background: rgba(255, 255, 255, 0.9);
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.06);
+        }
+        .service-modern-company-logo {
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
+            object-fit: contain;
+            border: 1px solid rgba(0, 0, 0, 0.06);
+            background: rgba(0, 0, 0, 0.03);
+            padding: 8px;
+            flex: 0 0 56px;
+        }
+        .service-modern-company-name {
+            margin: 0;
+            font-weight: 800;
+            line-height: 1.2;
+        }
+        .service-modern-company-type {
+            margin: 6px 0 0 0;
+            opacity: 0.8;
+            font-size: 13px;
+        }
+    </style>
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="{% url 'index-page' %}">Главная</a>
+            <span>/</span>
+            <a href="{% url 'category-detail' category.id %}">{{ category.name }}</a>
+            <span>/</span>
+            <span>{{ service.title }}</span>
+        </div>
+    </div>
+
+    <section class="service-hero"{% if service.cover_image %} style="background-image: url('{{ service.cover_image.url }}');"{% endif %}>
+        <div class="container">
+            <h1 class="page-title">{{ service.title }}</h1>
+            <div class="service-actions">
+                {% if service.cover_video_url %}
+                    <a class="btn btn-outline" href="{{ service.cover_video_url }}" target="_blank" rel="noopener noreferrer">
+                        Видео
+                    </a>
+                {% endif %}
+                {% if service.has_360 and service.view_360_url %}
+                    <a class="btn btn-outline" href="{{ service.view_360_url }}" target="_blank" rel="noopener noreferrer">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                            <circle cx="12" cy="12" r="3"></circle>
+                        </svg>
+                        Посмотреть 360°
+                    </a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+    <br>
+    <br>
+
+    <!-- Service Details -->
+    <section class="service-details">
+        <div class="container">
+            <div class="accordion">
+                <!-- Accordion Item 1 -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>Что входит в услугу</span>
+                        <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="zone-list">
+                            {% if zone_groups %}
+                                {% for group in zone_groups %}
+                                    <div class="zone-item">
+                                        <h4>{{ group.label }}</h4>
+                                        <ul>
+                                            {% for item in group.items %}
+                                                <li>{{ item.text }}</li>
+                                            {% endfor %}
+                                        </ul>
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="page-description">Пока нет данных для этой услуги.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>Требования к объекту</span>
+                        <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="service-section-modern">
+                            {% if requirement_items %}
+                                <ul class="service-modern-list">
+                                    {% for item in requirement_items %}
+                                        <li class="service-modern-list-item">
+                                            <span class="service-modern-bullet">!</span>
+                                            <p class="service-modern-muted">{{ item.text }}</p>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="page-description">Пока нет требований для этой услуги.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>Условия выполнения работ</span>
+                        <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="service-section-modern">
+                            {% if work_condition_items %}
+                                <ul class="service-modern-list">
+                                    {% for item in work_condition_items %}
+                                        <li class="service-modern-list-item">
+                                            <span class="service-modern-bullet">OK</span>
+                                            <p class="service-modern-muted">{{ item.text }}</p>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="page-description">Пока нет условий выполнения работ для этой услуги.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>Что НЕ входит</span>
+                        <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="service-section-modern">
+                            {% if excluded_items %}
+                                <ul class="service-modern-list">
+                                    {% for item in excluded_items %}
+                                        <li class="service-modern-list-item">
+                                            <span class="service-modern-bullet service-modern-bullet-danger">NO</span>
+                                            <p class="service-modern-muted">{{ item.text }}</p>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            {% else %}
+                                <p class="page-description">Пока нет списка «что не входит» для этой услуги.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 3 -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>Используемые средства</span>
+                        <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="service-section-modern">
+                            {% if chemical_items %}
+                                <div class="service-modern-products">
+                                    {% for item in chemical_items %}
+                                        <div class="service-modern-product">
+                                            {% if item.image %}
+                                                <img class="service-modern-product-img" src="{{ item.image.url }}" alt="{{ item.name }}">
+                                            {% endif %}
+                                            <div>
+                                                <h4 class="service-modern-card-title">{{ item.name }}</h4>
+                                                {% if item.description %}
+                                                    <p class="service-modern-muted">{{ item.description }}</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p class="page-description">Пока нет списка средств для этой услуги.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 4 -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>Оборудование и техника</span>
+                        <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="service-section-modern">
+                            {% if equipment_items %}
+                                <div class="service-modern-products">
+                                    {% for item in equipment_items %}
+                                        <div class="service-modern-product">
+                                            {% if item.image %}
+                                                <img class="service-modern-product-img" src="{{ item.image.url }}" alt="{{ item.name }}">
+                                            {% endif %}
+                                            <div>
+                                                <h4 class="service-modern-card-title">{{ item.name }}</h4>
+                                                {% if item.description %}
+                                                    <p class="service-modern-muted">{{ item.description }}</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p class="page-description">Пока нет списка оборудования для этой услуги.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 5 -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>Стоимость и расчёт цены</span>
+                        <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="pricing-info">
+                            <p class="price-large">от 150 ₽/м²</p>
+                            <div class="price-factors">
+                                <p><strong>Что влияет на цену:</strong></p>
+                                <ul>
+                                    <li>• Площадь помещения</li>
+                                    <li>• Степень загрязнения</li>
+                                    <li>• Наличие дополнительных услуг</li>
+                                    <li>• Регулярность уборки</li>
+                                </ul>
+                            </div>
+                            <p class="min-order">Минимальная стоимость заказа: 5 000 ₽</p>
+                            <button class="btn btn-primary">Рассчитать стоимость</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Accordion Item 6 -->
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>Часто задаваемые вопросы</span>
+                        <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="faq-list">
+                            {% if faq_items %}
+                                {% for item in faq_items %}
+                                    <div class="faq-item">
+                                        <h4>{{ item.question }}</h4>
+                                        {% if item.answer %}
+                                            <p>{{ item.answer }}</p>
+                                        {% endif %}
+                                    </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="page-description">Пока нет FAQ для этой услуги.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>Кейсы До/После</span>
+                        <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="service-section-modern">
+                            {% if cases_before_after %}
+                                <div class="service-modern-cases">
+                                    {% for item in cases_before_after %}
+                                        <div class="service-modern-case">
+                                            <div class="service-modern-case-body">
+                                                <h4 class="service-modern-card-title">{{ item.title }}</h4>
+                                                {% if item.description %}
+                                                    <p class="service-modern-muted">{{ item.description }}</p>
+                                                {% endif %}
+                                            </div>
+                                            <div class="service-modern-case-images">
+                                                <div class="service-modern-case-image-wrap">
+                                                    <span class="service-modern-case-badge">ДО</span>
+                                                    {% if item.before_image %}
+                                                        <img class="service-modern-case-image" src="{{ item.before_image.url }}" alt="{{ item.title }} - до">
+                                                    {% endif %}
+                                                </div>
+                                                <div class="service-modern-case-image-wrap">
+                                                    <span class="service-modern-case-badge">ПОСЛЕ</span>
+                                                    {% if item.after_image %}
+                                                        <img class="service-modern-case-image" src="{{ item.after_image.url }}" alt="{{ item.title }} - после">
+                                                    {% endif %}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p class="page-description">Пока нет кейсов До/После для этой услуги.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>Кто уже заказывал</span>
+                        <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="service-section-modern">
+                            {% if client_companies %}
+                                <div class="service-modern-company-grid">
+                                    {% for item in client_companies %}
+                                        <div class="service-modern-company">
+                                            {% if item.logo %}
+                                                <img class="service-modern-company-logo" src="{{ item.logo.url }}" alt="{{ item.name }}">
+                                            {% endif %}
+                                            <div>
+                                                <p class="service-modern-company-name">{{ item.name }}</p>
+                                                {% if item.business_type %}
+                                                    <p class="service-modern-company-type">{{ item.business_type }}</p>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p class="page-description">Пока нет списка компаний-клиентов для этой услуги.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="accordion-item">
+                    <button class="accordion-header">
+                        <span>Документы</span>
+                        <svg class="accordion-icon" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                    </button>
+                    <div class="accordion-content">
+                        <div class="service-section-modern">
+                            {% if documents %}
+                                <div class="service-modern-docs">
+                                    {% for item in documents %}
+                                        <div class="service-modern-doc">
+                                            <div class="service-modern-doc-icon">DOC</div>
+                                            <div>
+                                                <p class="service-modern-doc-title">
+                                                    {% if item.title %}{{ item.title }}{% else %}{{ item.get_doc_type_display }}{% endif %}
+                                                </p>
+                                                <p class="service-modern-doc-meta">{{ item.get_doc_type_display }}</p>
+                                                {% if item.file %}
+                                                    <a class="service-modern-doc-link" href="{{ item.file.url }}" target="_blank" rel="noopener noreferrer">Открыть</a>
+                                                {% elif item.url %}
+                                                    <a class="service-modern-doc-link" href="{{ item.url }}" target="_blank" rel="noopener noreferrer">Открыть</a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            {% else %}
+                                <p class="page-description">Пока нет документов для этой услуги.</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

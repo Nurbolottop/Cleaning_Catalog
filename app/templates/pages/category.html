@@ -1,0 +1,50 @@
+{% extends 'include/homepage.html' %}
+{% load static %}   
+{% block content %}
+    <!-- Breadcrumb -->
+    <div class="breadcrumb">
+        <div class="container">
+            <a href="{% url 'index-page' %}">Главная</a>
+            <span>/</span>
+            <span id="category-name">{{ category.name }}</span>
+        </div>
+    </div>
+
+    <!-- Category Hero -->
+    <section class="category-hero"{% if category.image %} style="background-image: url('{{ category.image.url }}');"{% endif %}>
+        <div class="container">
+            <div class="category-hero-content">
+                <h1 class="page-title" id="page-title">{{ category.name }}</h1>
+                {% if category.descriptions %}
+                    <p class="page-description" id="page-description">{{ category.descriptions }}</p>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+
+    <!-- Services List -->
+    <section class="services">
+        <div class="container">
+            <h2 class="section-title">Наши услуги</h2>
+
+            <div class="services-grid">
+                {% if services %}
+                    {% for service in services %}
+                        {% if service.slug %}
+                            <a href="{% url 'service-detail' service.slug %}" class="service-card">
+                                <div class="service-content">
+                                    <h3 class="service-title">{{ service.title }}</h3>
+                                </div>
+                            </a>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
+            </div>
+
+            {% if not services %}
+                <p class="page-description">Пока нет услуг для этой категории.</p>
+            {% endif %}
+        </div>
+    </section>
+
+{% endblock %}

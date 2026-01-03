@@ -1,0 +1,45 @@
+{% load static %}
+
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="{% url 'index-page' %}" class="logo">
+                    <img src="{{settings.logo.url}}" class="logo-img" alt="{{settings.title}}">
+                </a>
+                <nav class="nav">
+                    <button class="mobile-menu-btn" aria-label="Меню">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    <ul class="nav-list">
+                        {% with categories|slice:":5" as visible_categories %}
+                            {% for category in visible_categories %}
+                                <li><a href="{% url 'category-detail' category.id %}">{{ category.name }}</a></li>
+                            {% endfor %}
+                        {% endwith %}
+                        
+                        {% with categories|slice:"5:" as hidden_categories %}
+                            {% if hidden_categories %}
+                                <li class="dropdown-wrapper">
+                                    <div class="dropdown-trigger" tabindex="0">
+                                        Еще
+                                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                            <path d="M6 9l6 6 6-6"/>
+                                        </svg>
+                                    </div>
+                                    <ul class="dropdown-menu" aria-label="Дополнительные категории">
+                                        {% for category in hidden_categories %}
+                                            <li><a href="{% url 'category-detail' category.id %}">{{ category.name }}</a></li>
+                                        {% endfor %}
+                                    </ul>
+                                </li>
+                            {% endif %}
+                        {% endwith %}
+                    </ul>
+                    <button class="cta-btn">Оставить заявку</button>
+                </nav>
+            </div>
+        </div>
+    </header>

@@ -1,0 +1,82 @@
+{% load static %}
+<!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-grid">
+                <!-- Company Info -->
+                <div class="footer-column">
+                    <a href="{% url 'index-page' %}" class="logo">
+                        {% if settings.logo %}
+                            <img src="{{ settings.logo.url }}" class="footer-logo" alt="{{settings.title}}">
+                        {% else %}
+                            <span class="footer-title">{{settings.title}}</span>
+                        {% endif %}
+                    </a>
+                    {% if settings.descriptions %}
+                        <p class="footer-text">{{settings.descriptions}}</p>
+                    {% endif %}
+
+                    <div class="footer-actions">
+                        {% if settings.phone %}
+                            <a class="footer-btn" href="tel:{{settings.phone}}">Позвонить</a>
+                        {% endif %}
+                        {% if settings.email %}
+                            <a class="footer-btn footer-btn-outline" href="mailto:{{settings.email}}">Написать</a>
+                        {% endif %}
+                    </div>
+
+                    {% if settings.instagram %}
+                        <div class="footer-social">
+                            <a class="footer-social-link" href="{{settings.instagram}}" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10z" stroke="currentColor" stroke-width="2"/>
+                                    <path d="M17.5 6.5h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
+                                </svg>
+                                <span>Instagram</span>
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+
+                <!-- Categories -->
+                <div class="footer-column">
+                    <h4 class="footer-heading">Категории</h4>
+                    <ul class="footer-list">
+                        {% for category in categories %}
+                            <li><a href="{% url 'category-detail' category.id %}">{{ category.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                <div class="footer-column">
+                    <h4 class="footer-heading">Навигация</h4>
+                    <ul class="footer-list">
+                        <li><a href="{% url 'index-page' %}">Главная</a></li>
+                        <li><a href="{% url 'category-page' %}">Категории</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact -->
+                <div class="footer-column">
+                    <h4 class="footer-heading">Контакты</h4>
+                    <ul class="footer-list">
+                        {% if settings.phone %}
+                            <li><a href="tel:{{settings.phone}}">{{settings.phone}}</a></li>
+                        {% endif %}
+                        {% if settings.email %}
+                            <li><a href="mailto:{{settings.email}}">{{settings.email}}</a></li>
+                        {% endif %}
+                        {% if settings.location %}
+                            <li>{{settings.location}}</li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+
+            <div class="footer-bottom">
+                <p>&copy; {% now "Y" %} {{settings.title}}. Все права защищены.</p>
+                <a class="footer-top" href="#" onclick="window.scrollTo(0, 0); return false;">Наверх</a>
+            </div>
+        </div>
+    </footer>
