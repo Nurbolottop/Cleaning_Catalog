@@ -19,6 +19,13 @@ from core.project_settings.cors import *
 
 ROOT_URLCONF = 'core.urls'
 
+CSRF_TRUSTED_ORIGINS = [
+    'https://catalog.cleaningkiki.kg',
+]
+
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
+
 # from core.project_settings.templates import *
 
 TEMPLATES = [

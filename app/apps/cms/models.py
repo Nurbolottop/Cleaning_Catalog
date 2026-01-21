@@ -1,7 +1,7 @@
 from django.db import models
 from django.utils.text import slugify
 import uuid
-from django_resized.forms import ResizedImageField
+from django_resized import ResizedImageField
 
 # -------------------------------
 # Категории организаций

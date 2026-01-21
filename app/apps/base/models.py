@@ -1,5 +1,5 @@
 from django.db import models
-from django_resized.forms import ResizedImageField 
+from django_resized import ResizedImageField 
 # Create your models here.
 class Settings(models.Model):
     title = models.CharField(max_length=255, verbose_name="Название сайта")
