@@ -485,6 +485,11 @@ def create_service_with_related_data(category_name, service_title):
         }
     )
     
+    # Принудительно сохраняем услугу для генерации slug
+    if created or not service.slug:
+        service.save()
+        print(f"   🔗 Сгенерирован slug для услуги: {service.slug}")
+    
     if created:
         print(f"✅ Создана услуга: {service_title}")
         
