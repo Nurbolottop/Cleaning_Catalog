@@ -413,3 +413,45 @@ class ServiceDocument(models.Model):
 
     def __str__(self):
         return self.get_doc_type_display()
+
+# -------------------------------
+# Цены услуг
+# -------------------------------
+class ServicePriceItem(models.Model):
+    service = models.ForeignKey(
+        "Service", 
+        on_delete=models.CASCADE,
+        related_name="price_items",
+        verbose_name="Услуга"
+    )
+    
+    title = models.CharField(
+        max_length=255,
+        verbose_name="Наименование",
+        help_text="Например: Генеральная уборка до 50 м²"
+    )
+    
+    price = models.CharField(
+        max_length=100,
+        verbose_name="Стоимость",
+        help_text="Например: от 15 000 сом или договорная"
+    )
+    
+    description = models.CharField(
+        max_length=500,
+        blank=True,
+        null=True,
+        verbose_name="Описание",
+        help_text="Дополнительная информация о цене"
+    )
+    
+    order = models.PositiveIntegerField(default=0, verbose_name="Порядок")
+    is_active = models.BooleanField(default=True, verbose_name="Показывать")
+
+    class Meta:
+        verbose_name = "Цена услуги"
+        verbose_name_plural = "Цены услуг"
+        ordering = ["order", "id"]
+
+    def __str__(self):
+        return f"{self.title}: {self.price}"

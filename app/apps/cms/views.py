@@ -64,6 +64,11 @@ def service_detail(request, slug: str):
         .order_by("order", "id")
     )
 
+    price_items = (
+        service.price_items.filter(is_active=True)
+        .order_by("order", "id")
+    )
+
     cases_before_after = (
         service.cases_before_after.filter(is_active=True)
         .order_by("order", "id")

@@ -17,7 +17,7 @@ django.setup()
 from apps.cms.models import (
     CategoryOrganization, Service, ServiceZoneItem, ServiceChemicalItem,
     ServiceEquipmentItem, ServiceFAQItem, ServiceRequirementItem,
-    ServiceWorkConditionItem, ServiceExcludedItem
+    ServiceWorkConditionItem, ServiceExcludedItem, ServicePriceItem
 )
 
 # Структура данных
@@ -463,6 +463,13 @@ def create_service_with_related_data(category_name, service_title):
         ("Мойка фасадов", "Только при соответствующей услуге")
     ])
     
+    price_items = service_data.get("price_items", [
+        ("Базовая стоимость", "от 5 000 сом"),
+        ("Уборка до 50 м²", "от 10 000 сом"),
+        ("Уборка 50-100 м²", "от 15 000 сом"),
+        ("Уборка 100+ м²", "договорная")
+    ])
+    
     # Поиск категории
     category, created = CategoryOrganization.objects.get_or_create(
         name=category_name,
@@ -495,15 +502,17 @@ def create_service_with_related_data(category_name, service_title):
         
         # Создание всех связанных данных для новой услуги
         create_related_data(service, zone_items, chemical_items, equipment_items, 
-                           faq_items, requirement_items, work_condition_items, excluded_items)
+                           faq_items, requirement_items, work_condition_items, excluded_items, 
+                           service_data.get("price_items"))
     else:
         print(f"🔄 Услуга уже существует: {service_title}")
         # Проверяем и добавляем недостающие данные для существующей услуги
         update_existing_service(service, zone_items, chemical_items, equipment_items,
-                               faq_items, requirement_items, work_condition_items, excluded_items)
+                               faq_items, requirement_items, work_condition_items, excluded_items,
+                               service_data.get("price_items"))
 
 def create_related_data(service, zone_items, chemical_items, equipment_items, 
-                        faq_items, requirement_items, work_condition_items, excluded_items):
+                        faq_items, requirement_items, work_condition_items, excluded_items, price_items=None):
     """Создание всех связанных данных для услуги"""
     
     # Создание пунктов по зонам
@@ -587,9 +596,22 @@ def create_related_data(service, zone_items, chemical_items, equipment_items,
                 'is_active': True
             }
         )
+    
+    # Создание цен
+    if price_items:
+        for i, (title, price) in enumerate(price_items):
+            ServicePriceItem.objects.get_or_create(
+                service=service,
+                title=title,
+                defaults={
+                    'price': price,
+                    'order': i,
+                    'is_active': True
+                }
+            )
 
 def update_existing_service(service, zone_items, chemical_items, equipment_items,
-                           faq_items, requirement_items, work_condition_items, excluded_items):
+                           faq_items, requirement_items, work_condition_items, excluded_items, price_items=None):
     """Обновление существующей услуги - добавление недостающих данных"""
     
     updated = False
@@ -682,6 +704,20 @@ def update_existing_service(service, zone_items, chemical_items, equipment_items
                 is_active=True
             )
             updated = True
+    
+    # Проверяем и добавляем недостающие цены
+    if price_items:
+        existing_prices = set(service.price_items.values_list('title', flat=True))
+        for i, (title, price) in enumerate(price_items):
+            if title not in existing_prices:
+                ServicePriceItem.objects.create(
+                    service=service,
+                    title=title,
+                    price=price,
+                    order=i,
+                    is_active=True
+                )
+                updated = True
     
     if updated:
         print(f"   📝 Обновлена услуга: {service_title} (добавлены недостающие данные)")
