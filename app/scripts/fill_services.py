@@ -685,18 +685,21 @@ def update_existing_service(service, zone_items, chemical_items, equipment_items
 
 def main():
     """Основная функция"""
-    print("Начинаем заполнение услуг...")
+    print("🚀 Начинаем заполнение услуг...")
     
     total_created = 0
     
     for category_name, services in SERVICES_DATA.items():
-        print(f"\nОбработка категории: {category_name}")
+        print(f"\n📂 Обработка категории: {category_name}")
         
         for service_title in services:
             create_service_with_related_data(category_name, service_title)
             total_created += 1
     
-    print(f"\nЗавершено! Обработано {total_created} услуг")
+    print(f"\n✅ Завершено! Обработано {total_created} услуг")
 
 if __name__ == "__main__":
     main()
+
+# Вызов функции при запуске через shell
+main()
