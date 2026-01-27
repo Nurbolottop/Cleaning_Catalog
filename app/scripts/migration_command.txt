@@ -1,3 +1,0 @@
-# Для создания миграций выполните в Docker контейнере:
-python manage.py makemigrations cms
-python manage.py migrate
