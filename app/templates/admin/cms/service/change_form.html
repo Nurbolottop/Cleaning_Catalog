@@ -1,0 +1,17 @@
+{% extends "admin/change_form.html" %}
+{% load i18n admin_urls %}
+
+{% block object-tools-items %}
+    {{ block.super }}
+    {% if original and not original.pk is None %}
+        <li>
+            <form method="post" action="{% url opts|admin_urlname:'change' original.pk|admin_urlquote %}" style="display: inline;">
+                {% csrf_token %}
+                <input type="hidden" name="_duplicate" value="1">
+                <button type="submit" class="button" style="background: #417690; color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer;">
+                    📋 Дублировать услугу
+                </button>
+            </form>
+        </li>
+    {% endif %}
+{% endblock %}
