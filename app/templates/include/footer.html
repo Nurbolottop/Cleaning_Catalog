@@ -1,82 +1,200 @@
 {% load static %}
-<!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-grid">
-                <!-- Company Info -->
-                <div class="footer-column">
-                    <a href="{% url 'index-page' %}" class="logo">
+<!-- Enhanced Footer -->
+<footer class="footer">
+    <!-- Background Pattern -->
+    <div class="footer-bg-pattern"></div>
+    
+    <div class="container">
+        <!-- Main Footer Content -->
+        <div class="footer-content">
+            <!-- Company Info Section -->
+            <div class="footer-section footer-section--main">
+                <div class="footer-brand">
+                    <a href="{% url 'index-page' %}" class="footer-logo-link">
                         {% if settings.logo %}
                             <img src="{{ settings.logo.url }}" class="footer-logo" alt="{{settings.title}}">
                         {% else %}
-                            <span class="footer-title">{{settings.title}}</span>
+                            <div class="footer-logo-text">
+                                <span class="footer-logo-title">{{settings.title}}</span>
+                                <span class="footer-logo-subtitle">Cleaning Service</span>
+                            </div>
                         {% endif %}
                     </a>
+                    
                     {% if settings.descriptions %}
-                        <p class="footer-text">{{settings.descriptions}}</p>
+                        <p class="footer-description">{{settings.descriptions}}</p>
                     {% endif %}
 
-                    <div class="footer-actions">
+                    <!-- Contact Actions -->
+                    <div class="footer-contact-actions">
                         {% if settings.phone %}
-                            <a class="footer-btn" href="tel:{{settings.phone}}">Позвонить</a>
+                            <a class="footer-contact-btn footer-contact-btn--primary" href="tel:{{settings.phone}}">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                                </svg>
+                                <span>{{settings.phone}}</span>
+                            </a>
                         {% endif %}
                         {% if settings.email %}
-                            <a class="footer-btn footer-btn-outline" href="mailto:{{settings.email}}">Написать</a>
+                            <a class="footer-contact-btn footer-contact-btn--secondary" href="mailto:{{settings.email}}">
+                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                    <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                    <polyline points="22,6 12,13 2,6"/>
+                                </svg>
+                                <span>Написать</span>
+                            </a>
                         {% endif %}
                     </div>
 
+                    <!-- Social Links -->
                     {% if settings.instagram %}
                         <div class="footer-social">
-                            <a class="footer-social-link" href="{{settings.instagram}}" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                    <path d="M7 2h10a5 5 0 0 1 5 5v10a5 5 0 0 1-5 5H7a5 5 0 0 1-5-5V7a5 5 0 0 1 5-5z" stroke="currentColor" stroke-width="2"/>
-                                    <path d="M12 17a5 5 0 1 0 0-10 5 5 0 0 0 0 10z" stroke="currentColor" stroke-width="2"/>
-                                    <path d="M17.5 6.5h.01" stroke="currentColor" stroke-width="3" stroke-linecap="round"/>
-                                </svg>
-                                <span>Instagram</span>
+                            <h5 class="footer-social-title">Следите за нами</h5>
+                            <div class="footer-social-links">
+                                <a class="footer-social-link" href="{{settings.instagram}}" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="currentColor" stroke-width="2"/>
+                                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" stroke="currentColor" stroke-width="2"/>
+                                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                                    </svg>
+                                </a>
+                                <!-- Add more social links if needed -->
+                            </div>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Categories Section -->
+            <div class="footer-section">
+                <h4 class="footer-section-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <rect x="3" y="3" width="7" height="7" rx="1"/>
+                        <rect x="14" y="3" width="7" height="7" rx="1"/>
+                        <rect x="14" y="14" width="7" height="7" rx="1"/>
+                        <rect x="3" y="14" width="7" height="7" rx="1"/>
+                    </svg>
+                    Категории услуг
+                </h4>
+                <ul class="footer-links">
+                    {% for category in categories %}
+                        <li>
+                            <a href="{% url 'category-detail' category.id %}" class="footer-link">
+                                <span class="footer-link-icon">→</span>
+                                {{ category.name }}
                             </a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+
+            <!-- Navigation Section -->
+            <div class="footer-section">
+                <h4 class="footer-section-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76"/>
+                    </svg>
+                    Навигация
+                </h4>
+                <ul class="footer-links">
+                    <li>
+                        <a href="{% url 'index-page' %}" class="footer-link">
+                            <span class="footer-link-icon">🏠</span>
+                            Главная
+                        </a>
+                    </li>
+                    <li>
+                        <a href="{% url 'category-page' %}" class="footer-link">
+                            <span class="footer-link-icon">📋</span>
+                            Все категории
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#about" class="footer-link">
+                            <span class="footer-link-icon">ℹ️</span>
+                            О компании
+                        </a>
+                    </li>
+                    <li>
+                        <a href="#contacts" class="footer-link">
+                            <span class="footer-link-icon">📞</span>
+                            Контакты
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!-- Contact Info Section -->
+            <div class="footer-section">
+                <h4 class="footer-section-title">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                        <circle cx="12" cy="10" r="3"/>
+                    </svg>
+                    Контактная информация
+                </h4>
+                <div class="footer-contact-info">
+                    {% if settings.phone %}
+                        <div class="footer-contact-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                            </svg>
+                            <a href="tel:{{settings.phone}}" class="footer-contact-link">{{settings.phone}}</a>
+                        </div>
+                    {% endif %}
+                    
+                    {% if settings.email %}
+                        <div class="footer-contact-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                                <polyline points="22,6 12,13 2,6"/>
+                            </svg>
+                            <a href="mailto:{{settings.email}}" class="footer-contact-link">{{settings.email}}</a>
+                        </div>
+                    {% endif %}
+                    
+                    {% if settings.location %}
+                        <div class="footer-contact-item">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/>
+                                <circle cx="12" cy="10" r="3"/>
+                            </svg>
+                            <span class="footer-contact-text">{{settings.location}}</span>
                         </div>
                     {% endif %}
                 </div>
 
-                <!-- Categories -->
-                <div class="footer-column">
-                    <h4 class="footer-heading">Категории</h4>
-                    <ul class="footer-list">
-                        {% for category in categories %}
-                            <li><a href="{% url 'category-detail' category.id %}">{{ category.name }}</a></li>
-                        {% endfor %}
-                    </ul>
+                <!-- Working Hours -->
+                <div class="footer-working-hours">
+                    <h5 class="footer-working-hours-title">Режим работы</h5>
+                    <div class="footer-working-hours-content">
+                        <p>Пн-Пт: 9:00 - 18:00</p>
+                        <p>Сб: 10:00 - 16:00</p>
+                        <p>Вс: Выходной</p>
+                    </div>
                 </div>
-
-                <div class="footer-column">
-                    <h4 class="footer-heading">Навигация</h4>
-                    <ul class="footer-list">
-                        <li><a href="{% url 'index-page' %}">Главная</a></li>
-                        <li><a href="{% url 'category-page' %}">Категории</a></li>
-                    </ul>
-                </div>
-
-                <!-- Contact -->
-                <div class="footer-column">
-                    <h4 class="footer-heading">Контакты</h4>
-                    <ul class="footer-list">
-                        {% if settings.phone %}
-                            <li><a href="tel:{{settings.phone}}">{{settings.phone}}</a></li>
-                        {% endif %}
-                        {% if settings.email %}
-                            <li><a href="mailto:{{settings.email}}">{{settings.email}}</a></li>
-                        {% endif %}
-                        {% if settings.location %}
-                            <li>{{settings.location}}</li>
-                        {% endif %}
-                    </ul>
-                </div>
-            </div>
-
-            <div class="footer-bottom">
-                <p>&copy; {% now "Y" %} {{settings.title}}. Все права защищены.</p>
-                <a class="footer-top" href="#" onclick="window.scrollTo(0, 0); return false;">Наверх</a>
             </div>
         </div>
-    </footer>
+
+        <!-- Bottom Footer -->
+        <div class="footer-bottom">
+            <div class="footer-bottom-content">
+                <div class="footer-copyright">
+                    <p>&copy; {% now "Y" %} {{settings.title}}. Все права защищены.</p>
+                    <p class="footer-copyright-subtitle">Профессиональные клининговые услуги</p>
+                </div>
+                
+                <div class="footer-bottom-actions">
+                    <a class="footer-back-to-top" href="#" onclick="window.scrollTo({top: 0, behavior: 'smooth'}); return false;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="12" y1="19" x2="12" y2="5"/>
+                            <polyline points="5,12 12,5 19,12"/>
+                        </svg>
+                        <span>Наверх</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
